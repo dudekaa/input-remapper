@@ -13,7 +13,17 @@ build_deb() {
   dpkg -b build/deb dist/input-remapper-1.5.0.deb
 }
 
-build_deb &
+build_rpm() {
+  [ ! -d ~/rpmbuild ] && rpmdev-setuptree
+  rpmbuild -bb SPECS/input-remapper.spec
+}
+
+if which dpkg > /dev/null; then
+  build_deb &
+fi
+if which rpm > /dev/null; then
+  build_rpm &
+fi
 # add more build targets here
 
 wait
